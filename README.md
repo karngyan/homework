@@ -1,3 +1,69 @@
+---
+
+# Solution
+
+---
+
+## Demo Video
+
+- Loom: [google.com](https://google.com)
+
+## Approach taken
+
+### Assumptions
+
+- Storing user attributes, and event data in memory for now.
+- I might move to an embedded db instead of a relational for quick testing and dev ease.
+- Indexed on user_id
+- Create customer request overwrites any existing customer with the same id.
+
+> Breaking the homework into subtasks, to give an overall idea of how I implemented it and keep track of my progress as well.
+
+### Backend
+
+Basic approach was to get it right first, and then optimize on readability.
+
+- [x] Generate data files as instructed.
+- [x] Process message type=attributes to store the most recent attribute change record for any user in memory. 
+- [x] Process message type=event to uniquely count every event for a user_id in memory, preferably in a `map[user_id]map[event_name]int64`
+- [x] Implement the `serve.Datastore` interface by connecting it to the summarized data about user and events. Make sure attribute changes are merged.
+- [x] Verify the api using the given verify script.
+- [ ] Test for by generating much bigger messages files.
+
+#### If time allows
+
+- [ ] Add mysql/postgres to datastore.
+- [ ] Add an in memory caching layer: `ristretto` or `redis`
+- [ ] Generate swagger clients to be consumed by the frontend.
+- [ ] Deploy it.
+
+### Frontend
+
+I wanted to complete the project in Ember, but due to work and time constraints, doing it in `Nuxt` & `Tailwind` instead, as I think I can finish it off quickly.
+
+- [ ] Scaffold `Nuxt` & `Tailwind` project.
+- [ ] Add basic components like Nav and Footer.
+- [ ] Implement the All Customers Page.
+- [ ] Implement the Show Customer Page.
+- [ ] Implement the Edit customer page. (High Priority)
+
+#### If time allows
+
+- [ ] Deploy it.
+
+### Overall
+
+- [ ] Test it on commodity hardware.
+- [ ] Make a demo video.
+- [ ] Enjoy it all thoroughly. :)
+
+
+---
+
+# Problem Statement
+
+---
+
 # Customer.io Challenge README
 
 This challenge is designed to test both your Frontend and Backend abilities, and is broken into two sections. You should aim to spend roughly an equal amount of time on each, so please read through the requirements for both sections, as well as our evaluation criteria before starting on the assignment. 

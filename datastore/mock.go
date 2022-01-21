@@ -36,7 +36,7 @@ var mockCustomer2 = &serve.Customer{
 	LastUpdated: 1625180000,
 }
 
-func (d Mock) Get(id int) (*serve.Customer, error) {
+func (m Mock) Get(id int) (*serve.Customer, error) {
 	switch id {
 	case 1:
 		return mockCustomer1, nil
@@ -47,7 +47,7 @@ func (d Mock) Get(id int) (*serve.Customer, error) {
 	}
 }
 
-func (d Mock) List(page, count int) ([]*serve.Customer, error) {
+func (m Mock) List(page, count int) ([]*serve.Customer, error) {
 	return []*serve.Customer{mockCustomer1, mockCustomer2}, nil
 }
 
