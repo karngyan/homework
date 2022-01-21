@@ -1,5 +1,5 @@
 <template>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     <div v-if="customer">
       <div class="md:flex md:items-center md:justify-between">
         <div class="flex-1 min-w-0">
@@ -8,10 +8,10 @@
           </h2>
         </div>
         <div class="mt-4 flex md:mt-0">
-          <button type="button"
-                  class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+          <nuxt-link :to="`/customers/${id}/edit`"
+                     class="ml-3 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
             Edit attributes
-          </button>
+          </nuxt-link>
         </div>
       </div>
 
@@ -24,7 +24,32 @@
       </div>
       <div class="mt-5">
         <dl class="">
-          <div v-for="(key, ind) in Object.keys(customer.attributes)" :key="`${key}-${ind}`" class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
+          <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
+            <dt class="text-sm font-medium text-gray-500">
+              id
+            </dt>
+            <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <span class="flex-grow">{{ customer.id }}</span>
+            </dd>
+          </div>
+          <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
+            <dt class="text-sm font-medium text-gray-500">
+              email
+            </dt>
+            <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <span class="flex-grow">{{ customer.attributes.email }}</span>
+            </dd>
+          </div>
+          <div class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
+            <dt class="text-sm font-medium text-gray-500">
+              created_at
+            </dt>
+            <dd class="mt-1 flex text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+              <span class="flex-grow">{{ customer.attributes.created_at }}</span>
+            </dd>
+          </div>
+          <div v-if="key !== 'email' && key !== 'created_at'" v-for="(key, ind) in Object.keys(customer.attributes)" :key="`${key}-${ind}`"
+               class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt class="text-sm font-medium text-gray-500">
               {{ key }}
             </dt>
@@ -50,7 +75,8 @@
               <span class="flex-grow">Count</span>
             </dd>
           </div>
-          <div v-for="(key, ind) in Object.keys(customer.events)" :key="`${key}-${ind}`" class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
+          <div v-for="(key, ind) in Object.keys(customer.events)" :key="`${key}-${ind}`"
+               class="py-2 sm:grid sm:grid-cols-3 sm:gap-4">
             <dt class="text-sm font-medium text-gray-500">
               {{ key }}
             </dt>
@@ -60,16 +86,6 @@
           </div>
         </dl>
       </div>
-
-
-
-
-
-
-
-
-
-
 
 
     </div>

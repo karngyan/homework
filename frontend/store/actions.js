@@ -43,4 +43,22 @@ export default {
     })
   },
 
+  patchCustomerAttributes({state, commit}, { attributes, id }) {
+    return new Promise((resolve, reject) => {
+      this.$axios.patch(`/customers/${id}`, {
+        customer: {
+          attributes
+        }
+      })
+        .then((resp) => {
+          const customer = resp.data.customer
+          commit('setItem', {id: customer.id, item: customer, resource: 'customers'})
+          resolve(customer)
+        }).catch((err) => {
+        reject(err)
+      })
+
+    })
+  }
+
 }

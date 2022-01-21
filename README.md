@@ -25,13 +25,19 @@ Basic approach was to get it right first, and then optimize on readability.
 - [x] Implement the `serve.Datastore` interface by connecting it to the summarized data about user and events. Make sure attribute changes are merged.
 - [x] Verify the api using the given verify script.
 - [x] Test for by generating much bigger messages files: Basic testing with 1M+ messages.
-
-#### If time allows
-
+---
 - [ ] Deploy it.
 - [ ] Add mysql/postgres to datastore.
 - [ ] Add an in memory caching layer: `ristretto` or `redis`
 - [ ] Generate swagger clients to be consumed by the frontend.
+
+
+#### Bullet points / Future work
+
+- Optimizing on process time by paralleling events and attributes record separately.
+- Releasing the summarized data from memory once data store is created.
+- Also, I wanted to understand the practical use case of summarizing the data?
+
 
 ### Frontend
 
@@ -41,17 +47,17 @@ I wanted to complete the project in Ember, but due to work and time constraints,
 - [x] Add basic components like Nav and Footer.
 - [x] Implement all Customers Page.
 - [x] Implement the Show Customer Page.
-- [ ] Implement the Edit customer page. (High Priority)
-
-#### If time allows
-
+- [x] Implement the Edit customer page. (High Priority)
+---
+- [ ] Add some tests to check important edit flows.
 - [ ] Deploy it.
 
-### Overall
+#### Known improvements / Future work
 
-- [x] Test it on commodity hardware: Basic testing on `t2.small` with 1M records.
-- [ ] Make a demo video.
-- [ ] Enjoy it all thoroughly. :)
+- Inline errors while the user types in attributes name.
+- Loading indicators, I skipped these due to time constraints.
+- Better error handling, UX wise.
+- Caching paginated data client side. Right now fetching everytime the entire table page is visited.
 
 
 # Problem Statement

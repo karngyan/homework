@@ -6,7 +6,6 @@ import (
 
 	"github.com/customerio/homework/serve"
 	"github.com/customerio/homework/stream"
-	"github.com/customerio/homework/utils"
 	"github.com/hashicorp/go-memdb"
 	"github.com/labstack/gommon/log"
 )
@@ -151,7 +150,9 @@ func (d Datastore) Update(id int, attributes map[string]string) (*serve.Customer
 		return nil, err
 	}
 
-	customer.Attributes = utils.MergeMaps(attributes, customer.Attributes, true)
+	// customer.Attributes = utils.MergeMaps(attributes, customer.Attributes, true)
+	// in order to handle removal of attributes
+	customer.Attributes = attributes
 	customer.LastUpdated = int(time.Now().Unix())
 	txn := d.customers.Txn(true)
 	if err := txn.Insert(customerTableName, customer); err != nil {
