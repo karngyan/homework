@@ -1,8 +1,4 @@
----
-
 # Solution
-
----
 
 ## Demo Video
 
@@ -28,14 +24,14 @@ Basic approach was to get it right first, and then optimize on readability.
 - [x] Process message type=event to uniquely count every event for a user_id in memory, preferably in a `map[user_id]map[event_name]int64`
 - [x] Implement the `serve.Datastore` interface by connecting it to the summarized data about user and events. Make sure attribute changes are merged.
 - [x] Verify the api using the given verify script.
-- [ ] Test for by generating much bigger messages files.
+- [x] Test for by generating much bigger messages files: Basic testing with 1M+ messages.
 
 #### If time allows
 
+- [ ] Deploy it.
 - [ ] Add mysql/postgres to datastore.
 - [ ] Add an in memory caching layer: `ristretto` or `redis`
 - [ ] Generate swagger clients to be consumed by the frontend.
-- [ ] Deploy it.
 
 ### Frontend
 
@@ -53,16 +49,12 @@ I wanted to complete the project in Ember, but due to work and time constraints,
 
 ### Overall
 
-- [ ] Test it on commodity hardware.
+- [x] Test it on commodity hardware: Basic testing on `t2.small` with 1M records.
 - [ ] Make a demo video.
 - [ ] Enjoy it all thoroughly. :)
 
 
----
-
 # Problem Statement
-
----
 
 # Customer.io Challenge README
 

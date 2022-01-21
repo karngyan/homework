@@ -25,21 +25,46 @@ func main() {
 		cancel()
 	}()
 
+	// process stream and fetch summarized data
+	szData := processStream(ctx, "data/messages.1.data")
+
+	// create datastore
 	var ds serve.Datastore
+	var err error
+
+	if ds, err = datastore.CreateDatastore(szData.attributes, szData.events); err != nil {
+		log.Fatal("failed to create data store, err: ", err)
+	}
+
+	// TODO: Can clear the summarized data to free up memory
+
+	// start the server
+	if err := serve.ListenAndServe(":1323", ds); err != nil {
+		log.Fatal(err)
+	}
+}
+
+type summarizedData struct {
+	// attributes - map of user_id -> most recent Record with summarized attributes
+	attributes map[string]stream.Record
+	// events - user_id -> event_name -> count
+	events map[string]map[string]int
+}
+
+func processStream(ctx context.Context, filepath string) summarizedData {
+	var totRecordsProcessed = 0
+	var start = time.Now()
 	var file *os.File
 	var err error
 
-	if file, err = os.Open("data/messages.2.data"); err != nil {
-		log.Fatal(fmt.Sprintf("failed to open file, error: %v", err))
+	sd := summarizedData{
+		attributes: make(map[string]stream.Record),
+		events:     make(map[string]map[string]int),
 	}
 
-	processStart := time.Now()
-	// summarizedAttributes - map of user_id -> most recent Record with summarized attributes
-	var summarizedAttributes = make(map[string]stream.Record)
-	// summarizedEvents - user_id -> event_name -> count
-	var summarizedEvents = make(map[string]map[string]int)
-
-	var totalRecordsProcessed = 0
+	if file, err = os.Open(filepath); err != nil {
+		log.Fatal(fmt.Sprintf("failed to open file, error: %v", err))
+	}
 
 	if ch, err := stream.Process(ctx, file); err == nil {
 
@@ -47,23 +72,23 @@ func main() {
 		var dupEvents = make(map[string]bool)
 
 		for rec := range ch {
-			totalRecordsProcessed++
+			totRecordsProcessed++
 			switch rec.Type {
 			case "event":
 				if _, prs := dupEvents[rec.ID]; prs {
 					continue
 				}
 
-				if _, prs := summarizedEvents[rec.UserID]; !prs {
-					summarizedEvents[rec.UserID] = make(map[string]int)
+				if _, prs := sd.events[rec.UserID]; !prs {
+					sd.events[rec.UserID] = make(map[string]int)
 				}
 
 				dupEvents[rec.ID] = true
-				summarizedEvents[rec.UserID][rec.Name] += 1
+				sd.events[rec.UserID][rec.Name] += 1
 
 			case "attributes":
 				// attributes are merged to prevent last-write-wins scenario
-				if xrecord, prs := summarizedAttributes[rec.UserID]; prs {
+				if xrecord, prs := sd.attributes[rec.UserID]; prs {
 					if rec.Timestamp >= xrecord.Timestamp {
 						// recent record so overwrite any common keys in `xrecord.Data`
 						rec.Data = utils.MergeMaps(rec.Data, xrecord.Data, true)
@@ -77,7 +102,7 @@ func main() {
 					}
 				}
 
-				summarizedAttributes[rec.UserID] = *rec
+				sd.attributes[rec.UserID] = *rec
 			}
 		}
 		if err := ctx.Err(); err != nil {
@@ -87,17 +112,9 @@ func main() {
 		log.Println("stream processing failed", err)
 	}
 
-	processDuration := time.Now().Sub(processStart)
-	log.Println("time taken to process: ", processDuration)
-	log.Println("total records processed: ", totalRecordsProcessed)
+	duration := time.Now().Sub(start)
+	log.Println("time taken to process: ", duration)
+	log.Println("total records processed: ", totRecordsProcessed)
 
-	// create datastore
-	if ds, err = datastore.CreateDatastore(summarizedAttributes, summarizedEvents); err != nil {
-		log.Fatal("failed to create data store, err: ", err)
-	}
-
-	// start the server
-	if err := serve.ListenAndServe(":1323", ds); err != nil {
-		log.Fatal(err)
-	}
+	return sd
 }
