@@ -37,10 +37,10 @@ Basic approach was to get it right first, and then optimize on readability.
 
 I wanted to complete the project in Ember, but due to work and time constraints, doing it in `Nuxt` & `Tailwind` instead, as I think I can finish it off quickly.
 
-- [ ] Scaffold `Nuxt` & `Tailwind` project.
-- [ ] Add basic components like Nav and Footer.
-- [ ] Implement the All Customers Page.
-- [ ] Implement the Show Customer Page.
+- [x] Scaffold `Nuxt` & `Tailwind` project.
+- [x] Add basic components like Nav and Footer.
+- [x] Implement all Customers Page.
+- [x] Implement the Show Customer Page.
 - [ ] Implement the Edit customer page. (High Priority)
 
 #### If time allows

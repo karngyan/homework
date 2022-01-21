@@ -26,7 +26,7 @@ func main() {
 	}()
 
 	// process stream and fetch summarized data
-	szData := processStream(ctx, "data/messages.1.data")
+	szData := processStream(ctx, "data/messages.2.data")
 
 	// create datastore
 	var ds serve.Datastore

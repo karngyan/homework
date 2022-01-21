@@ -1,7 +1,8 @@
 <template>
 <div>
-  <Logo class="h-12"/>
+  <Nav />
   <Nuxt />
+  <Footer />
 </div>
 </template>
 

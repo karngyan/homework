@@ -95,7 +95,7 @@ func (d Datastore) Get(id int) (*serve.Customer, error) {
 
 func (d Datastore) List(page, count int) ([]*serve.Customer, error) {
 	// since the data is stored as a concurrent map, skipping optimizing on time complexity for List
-	var start = (page-1)*count + 1
+	var start = ((page - 1) * count) + 1
 	var end = start + count - 1
 	var iter = 1
 
